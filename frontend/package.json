@@ -11,7 +11,9 @@
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.6",
     "@reown/appkit-adapter-wagmi": "^1.6.9",
+    "@tanstack/react-query": "^5.66.9",
     "clsx": "^2.1.1",
+    "ethers": "^6.13.5",
     "next": "13.5.4",
     "react": "^18",
     "react-dom": "^18",

@@ -22,21 +22,11 @@ export const WalletModal: FC<PropsWithChildren> = ({ children }) => {
         className="sm:max-w-[425px] font-boo text-white bg-[#190e59] p-10 rounded-2xl border border-[rgba(255,255,255,0.1)]"
       >
         <DialogHeader>
-          <DialogTitle
-            className="text-4xl uppercase italic mb-5 text-white"
-            style={{
-              fontFamily: "Boogaloo",
-            }}
-          >
+          <DialogTitle className="text-4xl uppercase italic mb-5 text-white">
             Connect Wallet
           </DialogTitle>
         </DialogHeader>
-        <div
-          className="flex flex-wrap gap-5 w-full"
-          style={{
-            fontFamily: "Boogaloo",
-          }}
-        >
+        <div className="flex flex-wrap gap-5 w-full">
           {connectors?.map((connector, i) => (
             <button
               key={i}
