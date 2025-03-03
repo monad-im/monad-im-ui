@@ -1,5 +1,5 @@
-import { HomePage } from "@/features/home";
+import LandingPage from "@/features/landing";
 
 export default function Home() {
-  return <HomePage />;
+  return <LandingPage />;
 }
