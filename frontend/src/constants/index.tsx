@@ -1,3 +1,5 @@
+import { parseAbi } from "viem";
+
 export const insights = [
   {
     title: "Dynamic Evolution",
@@ -116,3 +118,9 @@ export const rowsContent = [
     image: "/veenox/monad.webp",
   },
 ];
+
+export const abi = parseAbi([
+  `function getCurrentMintFee() view returns (uint256)`,
+  `function requestMint() payable`,
+  `function getHolders() view returns (address[])`,
+]);
