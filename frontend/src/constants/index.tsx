@@ -1,5 +1,3 @@
-import { parseAbi } from "viem";
-
 export const insights = [
   {
     title: "Dynamic Evolution",
@@ -16,7 +14,7 @@ export const insights = [
   {
     title: "NFT Stealing Mechanic",
     description:
-      "Engage in strategic battles where higher-level NFTs can challenge and “steal” from lower-level ones. This innovative mechanic creates an ever-changing landscape of competition and opportunity.",
+      "Engage in strategic battles where higher-level NFTs can challenge and 'steal' from lower-level ones. This innovative mechanic creates an ever-changing landscape of competition and opportunity.",
     icon: "/assets/trophee.png",
   },
 ];
@@ -118,9 +116,3 @@ export const rowsContent = [
     image: "/veenox/monad.webp",
   },
 ];
-
-export const abi = parseAbi([
-  `function getCurrentMintFee() view returns (uint256)`,
-  `function requestMint() payable`,
-  `function getHolders() view returns (address[])`,
-]);
