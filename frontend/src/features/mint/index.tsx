@@ -41,6 +41,10 @@ export const MintPage = () => {
     hash,
     userMinted,
     isTxError,
+    getRankMetadata,
+    getRankImage,
+    userPoints: points,
+    userRank: rank,
   } = useContract();
 
   const [userRank, setUserRank] = useState<bigint | undefined>(undefined);
@@ -139,9 +143,17 @@ export const MintPage = () => {
 
   useEffect(() => {
     if (isTxConfirmed) {
+      setTimeout(() => {
+        refreshAllData();
+      }, 3000);
+    }
+  }, [isTxConfirmed, refreshAllData]);
+
+  useEffect(() => {
+    if (userMinted !== undefined) {
       refreshAllData();
     }
-  }, [isTxConfirmed]);
+  }, [userMinted, refreshAllData]);
 
   const currentRank =
     userRank && userRank > 0 && userRank <= BigInt(RANKS.length)
@@ -163,6 +175,20 @@ export const MintPage = () => {
       console.error("Erreur lors de l'upgrade:", error);
     }
   };
+
+  useEffect(() => {
+    const test = async () => {
+      try {
+        // const a = await getRankImage(rank);
+        // console.log("abbbbb", a);
+        const b = await getRankImage(1);
+        console.log("abbbbb", b);
+      } catch (e) {
+        console.log("NOOOOOOOOO");
+      }
+    };
+    test();
+  }, [rank, address]);
 
   return (
     <main className="container mx-auto py-8">
@@ -190,7 +216,7 @@ export const MintPage = () => {
                         className="w-6 h-6 rounded-full"
                       />
                       <span className="text-sm font-bold">
-                        Rank {userRank.toString()}
+                        Rank {rank?.toString() || 0}
                       </span>
                     </div>
                   </div>
@@ -237,7 +263,7 @@ export const MintPage = () => {
                           <div className="bg-white/10 p-3 rounded-lg hover:bg-white/15 transition-colors duration-200">
                             <p className="text-xs text-white/50">Points</p>
                             <p className="font-medium">
-                              {userPoints?.toString() || "0"}
+                              {points?.toString() || "0"}
                             </p>
                           </div>
                           <div className="bg-white/10 p-3 rounded-lg hover:bg-white/15 transition-colors duration-200">
@@ -273,12 +299,12 @@ export const MintPage = () => {
               <div className="mt-4 flex gap-4">
                 <button
                   onClick={handleMintNFT}
-                  disabled={isMinting || userMinted || isTxConfirming}
+                  disabled={isMinting || userMinted === true || isTxConfirming}
                   className={`flex-1 ${
-                    userMinted ? "bg-white/10" : "bg-purple"
-                  } bgm-purple py-3 px-6 rounded-lg font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2`}
+                    userMinted === true ? "bg-white/10" : "bg-purple"
+                  } py-3 px-6 rounded-lg font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2`}
                 >
-                  {isMinting || isTxConfirming ? (
+                  {isMinting ? (
                     <>
                       <svg
                         className="animate-spin h-5 w-5 text-white"
@@ -368,7 +394,7 @@ export const MintPage = () => {
             </div>
 
             <div className="w-full md:w-full ">
-              <h2 className="text-2xl font-bold mb-5">Statistiques</h2>
+              <h2 className="text-4xl font-bold mb-5">Statistics</h2>
               {isLoadingStats ? (
                 <StatisticsSkeleton />
               ) : (
@@ -376,7 +402,7 @@ export const MintPage = () => {
                   <div className="h-[130px] col-span-1 bg-white/10 rounded-2xl">
                     <div className="flex items-center justify-center flex-col w-full h-full">
                       <h1 className="text-4xl font-bold text-center">
-                        #{getRank(address)?.toString() || "N/A"}
+                        #{rank?.toString() || "N/A"}
                       </h1>
                       <p className="text-sm text-white/50 text-center mt-3">
                         Rank
@@ -386,7 +412,7 @@ export const MintPage = () => {
                   <div className="h-[130px] col-span-1 bg-white/10 rounded-2xl">
                     <div className="flex items-center justify-center flex-col w-full h-full">
                       <h1 className="text-4xl font-bold text-center">
-                        {formatNumber(Number(getPoints()) / 10 ** 18) || "0"}
+                        {formatNumber(Number(points || 0) / 10 ** 18) || "0"}
                       </h1>
                       <p className="text-sm text-white/50 text-center mt-3">
                         Points

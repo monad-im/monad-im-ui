@@ -2,7 +2,7 @@ import { CONTRACT_ABI, CONTRACT_ADDRESS } from "@/contract";
 import { LEAGUES } from "@/features/mint/constant";
 import { monadTestnet } from "@/lib/wagmi/config";
 import axios from "axios";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { createPublicClient, http } from "viem";
 import { readContract } from "viem/actions";
 import {
@@ -47,6 +47,7 @@ type ContractReturn = {
   getLeagueImage: (address: string) => string | undefined;
   refreshRankings: () => Promise<void>;
   calculateLeaderboard: () => Promise<void>;
+  checkMintStatus: () => Promise<void>;
 
   isMinting: boolean;
   isUpgrading: boolean;
@@ -106,6 +107,20 @@ export const useContract = (): ContractReturn => {
     functionName: "getCurrentMintFee",
   });
 
+  const { data: userRank, refetch: refetchUserRank } = useReadContract({
+    address: CONTRACT_ADDRESS,
+    abi: CONTRACT_ABI,
+    functionName: "getRank",
+    args: [address],
+  });
+
+  const { data: userPoints, refetch: refetchUserPoints } = useReadContract({
+    address: CONTRACT_ADDRESS,
+    abi: CONTRACT_ABI,
+    functionName: "getRank",
+    args: [address],
+  });
+
   const { data: holders, refetch: refetchHolders } = useReadContract({
     address: CONTRACT_ADDRESS,
     abi: CONTRACT_ABI,
@@ -118,11 +133,42 @@ export const useContract = (): ContractReturn => {
     functionName: "hasNFT",
     args: [address],
   });
+  const { data: getRankImage } = useReadContract({
+    address: CONTRACT_ADDRESS,
+    abi: CONTRACT_ABI,
+    functionName: "getRankImage",
+    args: [address],
+  });
+  const { data: getRankMetadata } = useReadContract({
+    address: CONTRACT_ADDRESS,
+    abi: CONTRACT_ABI,
+    functionName: "getRankImage",
+    args: [address],
+  });
 
   const publicClient = createPublicClient({
     chain: monadTestnet,
     transport: http(),
   });
+
+  const checkMintStatus = useCallback(async () => {
+    if (!address) return;
+
+    try {
+      const hasMinted = await hasNFT(address);
+
+      if (hasMinted) {
+        const [newRank, newPoints] = await Promise.all([
+          getRank(address),
+          getPoints(address),
+        ]);
+
+        setShouldRefresh(true);
+      }
+    } catch (error) {
+      console.error("Erreur lors de la vérification du statut de mint:", error);
+    }
+  }, [address, userMinted]);
 
   const mintNFT = async (e: any) => {
     e.preventDefault();
@@ -139,11 +185,11 @@ export const useContract = (): ContractReturn => {
         abi: CONTRACT_ABI,
         functionName: "requestMint",
         value: mintFee as bigint,
-        account: address,
-        chain: monadTestnet,
       });
 
-      setShouldRefresh(true);
+      setTimeout(() => {
+        checkMintStatus();
+      }, 2000);
     } catch (error: any) {
       console.error("Error while minting NFT:", error);
     } finally {
@@ -215,7 +261,7 @@ export const useContract = (): ContractReturn => {
         address: CONTRACT_ADDRESS,
         abi: CONTRACT_ABI,
         functionName: "getRank",
-        args: [toAddress || address],
+        args: [toAddress],
       });
       return rank;
     } catch (error) {
@@ -315,6 +361,8 @@ export const useContract = (): ContractReturn => {
     const interval = setInterval(() => {
       refetchMintFee();
       refetchHolders();
+      refetchUserRank();
+      refetchUserPoints();
       if (
         lastUpdated &&
         new Date().getTime() - lastUpdated.getTime() > 5 * 60 * 1000
@@ -328,6 +376,8 @@ export const useContract = (): ContractReturn => {
 
   useEffect(() => {
     if (isTxConfirmed && address) {
+      checkMintStatus();
+
       axios
         .post<{ success: boolean; hash: string }>(`${backendUrl}/api/mint`, {
           address,
@@ -335,14 +385,27 @@ export const useContract = (): ContractReturn => {
         .then((result) => {
           if (result.data.success) {
             setTimeout(() => {
+              refetchMintFee();
               refetchHolders();
+              refetchUserRank();
+              refetchUserPoints();
               setShouldRefresh(true);
+
+              checkMintStatus();
             }, 2000);
           }
         })
-        .catch((error) => {});
+        .catch((error) => {
+          console.error("Erreur lors de l'appel à l'API:", error);
+        });
     }
-  }, [isTxConfirmed]);
+  }, [isTxConfirmed, address, checkMintStatus]);
+
+  useEffect(() => {
+    if (userMinted) {
+      checkMintStatus();
+    }
+  }, [userMinted, checkMintStatus]);
 
   return {
     // Data
@@ -351,6 +414,8 @@ export const useContract = (): ContractReturn => {
     leaderboard,
     holderInfo,
     lastUpdated,
+    userPoints: userPoints as bigint | undefined,
+    userRank,
 
     // Fonctions
     mintNFT,
@@ -361,7 +426,9 @@ export const useContract = (): ContractReturn => {
     getLeagueImage,
     refreshRankings,
     calculateLeaderboard,
-
+    checkMintStatus,
+    getRankMetadata,
+    getRankImage,
     // States
     isMinting,
     isUpgrading,

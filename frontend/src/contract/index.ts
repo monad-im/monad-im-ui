@@ -1,4 +1,4 @@
-export const CONTRACT_ADDRESS = "0xd4f3acbf68c078101e4e3a771697b2c21f5568e9";
+export const CONTRACT_ADDRESS = "0xd4F3ACBf68c078101E4E3a771697b2c21f5568E9";
 export const CONTRACT_ABI = [
   {
     inputs: [],
@@ -111,6 +111,44 @@ export const CONTRACT_ABI = [
         internalType: "bool",
         name: "",
         type: "bool",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "rankId",
+        type: "uint256",
+      },
+    ],
+    name: "getRankImage",
+    outputs: [
+      {
+        internalType: "string",
+        name: "",
+        type: "string",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "rankId",
+        type: "uint256",
+      },
+    ],
+    name: "getRankMetadata",
+    outputs: [
+      {
+        internalType: "string",
+        name: "",
+        type: "string",
       },
     ],
     stateMutability: "view",
