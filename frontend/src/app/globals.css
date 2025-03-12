@@ -38,6 +38,11 @@ body {
   margin: 0 auto;
 }
 
+.rotate-3d {
+  transform-style: preserve-3d;
+  animation: rotateY 5s infinite linear;
+}
+
 @keyframes spin {
   0% {
     transform: rotate(0deg);

@@ -1,6 +1,6 @@
 import { FontLarge, FontMedium, FontSmall, H2 } from "@/components/fonts";
 
-export const ChainsSection = () => (
+export const ChallengeSection = () => (
   <section className="py-[100px] sm:py-[150px] relative overflow-hidden">
     <div className="max-w-[1500px] w-[90%] mx-auto">
       <div className="flex flex-col lg:flex-row justify-between items-center lg:items-center mb-[50px] lg:mb-[0px]">
@@ -18,11 +18,12 @@ export const ChainsSection = () => (
           </FontMedium>
         </div>
         <img
-          src="/pfp-veeno.png"
-          className="w-[300px] sm:w-[400px] lg:w-[400px] lg:mr-[100px] -scale-x-[1] "
+          src="/kingnadssticker.png"
+          className="w-[300px] sm:w-[400px] lg:w-[480px] lg:mr-[100px] rotate-3d"
+          alt="King Card"
         />
       </div>
-      <div className="flex flex-col lg:flex-row gap-5 lg:gap-[80px] text-center lg:text-left">
+      <div className="flex flex-col lg:flex-row gap-3 lg:gap-[40px] text-center lg:text-left">
         <div className="w-full lg:w-[500px] bg-secondary border border-borderColor-DARK rounded-2xl lg:h-[330px] p-6 sm:p-8 md:p-10 ">
           <FontLarge className="font-bold mb-3 lg:mb-5 text-white pb-3 lg:pb-5 border-b-2 border-borderColor">
             Dynamic Evolution

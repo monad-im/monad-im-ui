@@ -13,9 +13,9 @@ export const MintPriceSection = () => (
   >
     <div className="max-w-[1500px] w-[90%] mx-auto">
       <div className="flex flex-col lg:flex-row gap-10 items-center lg:justify-between mb-10">
-        <div className="rounded-2xl w-full lg:w-[550px] border border-borderColor-DARK">
+        <div className="rounded-2xl w-full lg:w-[550px] border border-borderColor-DARK shadow-2xl shadow-[#836EF9]">
           <img
-            src="/pfp-veeno.png"
+            src="/kingnad.jpg"
             className="object-cover h-full w-full rounded-2xl"
             alt="Test Academy"
           />

@@ -81,7 +81,7 @@ export const FAQSection = () => (
             as the project grows.
           </AccordionContent>
         </AccordionItem>
-        <AccordionItem value="item-5">
+        <AccordionItem value="item-6">
           <AccordionTrigger className="text-lg sm:text-xl text-base_color">
             Can I mint NFTs at any time?
           </AccordionTrigger>
@@ -91,7 +91,7 @@ export const FAQSection = () => (
             gradually rise over time.
           </AccordionContent>
         </AccordionItem>
-        <AccordionItem value="item-5">
+        <AccordionItem value="item-7">
           <AccordionTrigger className="text-lg sm:text-xl text-base_color">
             Where can I get help or ask questions?
           </AccordionTrigger>
