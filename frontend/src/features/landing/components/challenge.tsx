@@ -18,8 +18,8 @@ export const ChallengeSection = () => (
           </FontMedium>
         </div>
         <img
-          src="/kingnadssticker.png"
-          className="w-[300px] sm:w-[400px] lg:w-[480px] lg:mr-[100px] rotate-3d"
+          src="/kingnadsticker2.png"
+          className="w-[300px] sm:w-[400px] lg:w-[500px] lg:mr-[100px] rotate-3d"
           alt="King Card"
         />
       </div>
