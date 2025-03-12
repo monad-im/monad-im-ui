@@ -73,7 +73,7 @@ const Leaderboard = () => {
 
   return (
     <div className="gap-5 flex flex-col md:flex-row">
-      <div className="w-full rounded-2xl py-0 px-5 lg:p-6 sm:bg-[rgba(255,255,255,0.05)] mt-5">
+      <div className="w-full rounded-2xl py-0 px-5 lg:p-6 lg:bg-[rgba(255,255,255,0.05)] mt-5">
         <div className="flex justify-between items-center mb-6 flex-wrap gap-2">
           <h2 className="lg:text-4xl sm:text-2xl text-xl font-bold">
             Leaderboard
@@ -123,8 +123,8 @@ const Leaderboard = () => {
             <p className="text-gray-500">No holders found</p>
           </div>
         ) : (
-          <div className="overflow-x-scroll w-full">
-            <table className="min-w-[600px] w-full">
+          <div className="overflow-x-scroll max-h-[900px] w-full">
+            <table className="min-w-[600px] overflow-y-auto w-full">
               <thead>
                 <tr className="border-b border-white/10">
                   <th className="text-left pl-4 py-3">Rank</th>
