@@ -46,7 +46,7 @@ export function WalletConnection() {
     return (
       <button
         onClick={handleSwitchNetwork}
-        className=" bg-[#a1055c] rounded-lg h-[50px] px-4 font-bold text-xl uppercase min-w-[170px]"
+        className=" bg-[#836ef979] rounded-lg h-[50px] px-4 font-bold text-xl uppercase min-w-[170px]"
       >
         Switch to Monad Testnet
       </button>
@@ -59,7 +59,7 @@ export function WalletConnection() {
         <WalletModal>
           <button
             onClick={() => setIsOpen(true)}
-            className=" bg-[#a1055c] rounded-lg h-[35px] lg:h-[50px] px-4 font-bold text-sm lg:text-xl uppercase lg:min-w-[170px]"
+            className=" bg-[#836ef979] rounded-lg h-[35px] lg:h-[50px] px-4 font-bold text-sm lg:text-xl uppercase lg:min-w-[170px]"
           >
             Connect Wallet
           </button>
@@ -70,7 +70,7 @@ export function WalletConnection() {
         <div className="flex items-center gap-4">
           <button
             onClick={handleDisconnect}
-            className=" bg-[#a1055c] rounded-lg h-[35px] lg:h-[50px] px-4 font-bold text-sm lg:text-xl uppercase lg:min-w-[170px]"
+            className=" bg-[#836ef979] rounded-lg h-[35px] lg:h-[50px] px-4 font-bold text-sm lg:text-xl uppercase lg:min-w-[170px]"
           >
             {getDisplayText()}
           </button>
