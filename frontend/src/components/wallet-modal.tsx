@@ -20,6 +20,7 @@ export const WalletModal: FC<PropsWithChildren> = ({ children }) => {
       <DialogContent
         close={() => setIsOpen(false)}
         className="sm:max-w-[425px] font-boo text-white bg-[#190e59] p-10 rounded-2xl border border-[rgba(255,255,255,0.1)]"
+        style={{zIndex: 100}}
       >
         <DialogHeader>
           <DialogTitle className="text-4xl uppercase italic mb-5 text-white">
