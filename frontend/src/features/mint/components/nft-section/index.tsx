@@ -15,8 +15,6 @@ const NFTCard = ({ player, onLoad }: NFTCardProps) => {
     }
   }, [onLoad]);
 
-  console.log(player);
-
   return (
     <div className="w-full">
       <div className="relative group">
@@ -40,7 +38,7 @@ const NFTCard = ({ player, onLoad }: NFTCardProps) => {
                 />
               )}
               <span className="text-sm font-bold">
-                {player?.leagueInfo?.name} Rank {player?.rank.toString()}
+                Rank {player?.rank.toString()}
               </span>
             </div>
           </div>

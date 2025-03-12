@@ -205,12 +205,12 @@ export const useLeaderboard = () => {
 
   useEffect(() => {
     const loadLeaderboard = async () => {
-      if (!holders?.length || initialized) return;
+      if (!Array.isArray(holders) || initialized) return;
 
       setIsLoading(true);
       try {
-        const holdersWithPoints = [];
-        for (const holderAddress of holders) {
+        const holdersWithPoints: { address: string; points: bigint }[] = [];
+        for (const holderAddress of holders as string[]) {
           try {
             const points = await retryContractCall(async () => {
               return readContract(publicClient, {

@@ -3,7 +3,6 @@ import { addressFormatter, formatNumber } from "@/utils/format";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { useAccount } from "wagmi";
-import { League, LEAGUES } from "../../constant";
 
 const LeaderboardSkeleton = () => {
   return (
@@ -88,7 +87,7 @@ const Leaderboard = () => {
             </button>
           </div>
         </div>
-        <div className="flex flex-wrap gap-2 lg:gap-3 mb-2 lg:mb-4">
+        {/* <div className="flex flex-wrap gap-2 lg:gap-3 mb-2 lg:mb-4">
           <button
             onClick={() => setActiveLeague("ALL")}
             className={`px-3 py-1 rounded-full text-sm lg:text-base font-semibold transition-colors ${
@@ -115,7 +114,7 @@ const Leaderboard = () => {
               {LEAGUES[league].name}
             </button>
           ))}
-        </div>
+        </div> */}
         {isLoadingLeaderboard && !localLeaderboard.length ? (
           <LeaderboardSkeleton />
         ) : !localLeaderboard.length ? (

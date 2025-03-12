@@ -11,16 +11,11 @@ import {
 } from "wagmi";
 
 const RPC_URLS = [
-  "https://testnet-rpc.monad.xyz/",
   "https://testnet-rpc2.monad.xyz/52227f026fa8fac9e2014c58fbf5643369b3bfc6",
+  "https://testnet-rpc.monad.xyz/",
   "https://cold-alien-pine.monad-testnet.quiknode.pro/bd2bdf09752a1d1519c98a1b8baa6467eaa50cb8/",
   "https://monad-testnet.drpc.org/",
 ];
-
-const randomDelay = () =>
-  new Promise((resolve) =>
-    setTimeout(resolve, Math.floor(Math.random() * 1000) + 500)
-  );
 
 export const useNFTCard = () => {
   const { address } = useAccount();
@@ -86,7 +81,6 @@ export const useNFTCard = () => {
     args: [address],
   });
 
-  console.log(mintFee);
   useEffect(() => {
     const loadUserData = async () => {
       if (!address) return;
@@ -161,7 +155,7 @@ export const useNFTCard = () => {
         address: CONTRACT_ADDRESS,
         abi: CONTRACT_ABI,
         functionName: "requestMint",
-        value: mintFee,
+        value: mintFee as bigint,
       });
     } catch (error) {
       console.error("Erreur lors du mint:", error);
