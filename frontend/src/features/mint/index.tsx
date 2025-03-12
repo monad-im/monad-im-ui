@@ -46,9 +46,9 @@ export const MintPage = () => {
   const user = leaderboard.find((player) => player.address === address);
 
   return (
-    <main className="container mx-auto py-8">
+    <main className="container mx-auto lg:py-8">
       <div className="max-w-7xl mx-auto">
-        <div className="w-full bg-[rgba(255,255,255,0.05)] rounded-2xl px-9 py-5">
+        <div className="w-full sm:bg-[rgba(255,255,255,0.05)] rounded-2xl px-5 lg:px-9 py-5">
           <div className="flex flex-col md:flex-row gap-8">
             <div className="w-full md:w-fit">
               <NFTCard
@@ -56,10 +56,10 @@ export const MintPage = () => {
                 onLoad={() => console.log("NFT Card loaded")}
               />
               <div className="mt-3">
-                <p className="text-base text-white/70 font-medium">
+                <p className="text-sm sm:text-base text-white/70 font-medium">
                   Current Mint Price:
                 </p>
-                <p className="text-2xl text-white font-bold">
+                <p className="text-xl sm:text-2xl text-white font-bold">
                   {mintFee ? Number(mintFee) / 10 ** 18 : "0"} MON
                 </p>
               </div>
@@ -70,7 +70,7 @@ export const MintPage = () => {
                   disabled={isTxConfirming || hasNFT === true || isTxConfirming}
                   className={`flex-1 ${
                     hasNFT === true ? "bg-white/10" : "bg-purple"
-                  } py-3 px-6 rounded-lg font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2`}
+                  } py-2 lg:py-3 px-4 lg:px-6 rounded-lg font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2`}
                 >
                   {isTxConfirming ? (
                     <>
@@ -105,7 +105,7 @@ export const MintPage = () => {
                   disabled={!hasNFT || isTxConfirming || isTxConfirming}
                   className={`flex-1 ${
                     hasNFT ? "bg-purple" : "bg-white/10"
-                  } py-3 px-6 rounded-lg font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2`}
+                  } py-2 lg:py-3 px-4 lg:px-6 rounded-lg font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2`}
                 >
                   {isTxConfirming ? (
                     <>
@@ -156,39 +156,41 @@ export const MintPage = () => {
               )}
             </div>
 
-            <div className="w-full md:w-full">
-              <h2 className="text-4xl font-bold mb-5">Statistics</h2>
+            <div className="w-full">
+              <h2 className="text-xl sm:text-2xl lg:text-4xl font-bold mb-3 lg:mb-5">
+                Statistics
+              </h2>
               {isLoadingStats ? (
                 <StatisticsSkeleton />
               ) : (
                 <div className="grid grid-cols-3 gap-3">
-                  <div className="h-[130px] col-span-1 bg-gradient-to-r p-4 from-[rgba(255,255,255,0.1)] to-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.05)] rounded-lg">
+                  <div className="lg:h-[130px] col-span-1 bg-gradient-to-r p-4 from-[rgba(255,255,255,0.1)] to-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.05)] rounded-lg">
                     <div className="flex items-center justify-center flex-col w-full h-full">
-                      <h1 className="text-4xl font-bold text-center">
+                      <h1 className="text-xl sm:text-2xl lg:text-4xl font-bold text-center">
                         #{user?.rank?.toString() || "N/A"}
                       </h1>
-                      <p className="text-sm text-white/50 text-center mt-3">
+                      <p className="text-sm text-white/50 text-center mt-1 lg:mt-3">
                         Rank
                       </p>
                     </div>
                   </div>
-                  <div className="h-[130px] col-span-1 bg-gradient-to-r p-4 from-[rgba(255,255,255,0.1)] to-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.05)] rounded-lg">
+                  <div className="lg:h-[130px] col-span-1 bg-gradient-to-r p-4 from-[rgba(255,255,255,0.1)] to-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.05)] rounded-lg">
                     <div className="flex items-center justify-center flex-col w-full h-full">
-                      <h1 className="text-4xl font-bold text-center">
+                      <h1 className="text-xl sm:text-2xl lg:text-4xl  font-bold text-center">
                         {formatNumber(Number(user?.points || 0) / 10 ** 18) ||
                           "0"}
                       </h1>
-                      <p className="text-sm text-white/50 text-center mt-3">
+                      <p className="text-sm text-white/50 text-center mt-1 lg:mt-3">
                         Points
                       </p>
                     </div>
                   </div>
-                  <div className="h-[130px] col-span-1 bg-gradient-to-r p-4 from-[rgba(255,255,255,0.1)] to-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.05)] rounded-lg">
+                  <div className="lg:h-[130px] col-span-1 bg-gradient-to-r p-4 from-[rgba(255,255,255,0.1)] to-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.05)] rounded-lg">
                     <div className="flex items-center justify-center flex-col w-full h-full">
-                      <h1 className="text-4xl font-bold text-center">
+                      <h1 className="text-xl sm:text-2xl lg:text-4xl  font-bold text-center">
                         {leaderboard?.length || "0"}
                       </h1>
-                      <p className="text-sm text-white/50 text-center mt-3">
+                      <p className="text-sm text-white/50 text-center mt-1 lg:mt-3">
                         Holders
                       </p>
                     </div>

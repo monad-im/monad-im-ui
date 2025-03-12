@@ -22,7 +22,6 @@ export function WalletConnection() {
     if (isConnecting || isInitialLoading) return "Loading...";
     return `${address?.slice(0, 6)}...${address?.slice(-4)}`;
   };
-  console.log("chainID;", chainId);
   const isWrongNetwork = chainId !== 10143;
 
   const handleSwitchNetwork = async () => {
@@ -60,7 +59,7 @@ export function WalletConnection() {
         <WalletModal>
           <button
             onClick={() => setIsOpen(true)}
-            className=" bg-[#a1055c] rounded-lg h-[50px] px-2 font-bold text-xl uppercase min-w-[170px]"
+            className=" bg-[#a1055c] rounded-lg h-[35px] lg:h-[50px] px-4 font-bold text-sm lg:text-xl uppercase lg:min-w-[170px]"
           >
             Connect Wallet
           </button>
@@ -71,7 +70,7 @@ export function WalletConnection() {
         <div className="flex items-center gap-4">
           <button
             onClick={handleDisconnect}
-            className=" bg-[#a1055c] rounded-lg h-[50px] px-2 font-bold text-xl uppercase min-w-[170px]"
+            className=" bg-[#a1055c] rounded-lg h-[35px] lg:h-[50px] px-4 font-bold text-sm lg:text-xl uppercase lg:min-w-[170px]"
           >
             {getDisplayText()}
           </button>

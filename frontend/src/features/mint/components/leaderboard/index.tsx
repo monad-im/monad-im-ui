@@ -73,23 +73,25 @@ const Leaderboard = () => {
 
   return (
     <div className="gap-5 flex flex-col md:flex-row">
-      <div className="w-full rounded-2xl p-6 bg-[rgba(255,255,255,0.05)] mt-5">
+      <div className="w-full rounded-2xl py-0 px-5 lg:p-6 sm:bg-[rgba(255,255,255,0.05)] mt-5">
         <div className="flex justify-between items-center mb-6 flex-wrap gap-2">
-          <h2 className="text-4xl font-bold">Leaderboard</h2>
+          <h2 className="lg:text-4xl sm:text-2xl text-xl font-bold">
+            Leaderboard
+          </h2>
           <div className="flex gap-2 items-center">
             <button
               onClick={handleRefresh}
               disabled={isLoadingLeaderboard}
-              className="px-4 py-2 bg-purple rounded-lg text-white font-medium hover:bg-opacity-90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-3 lg:px-4 py-1 lg:py-2 bg-purple rounded-lg text-white font-medium hover:bg-opacity-90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isLoadingLeaderboard ? "Loading..." : "Refresh"}
             </button>
           </div>
         </div>
-        <div className="flex flex-wrap gap-3 mb-4">
+        <div className="flex flex-wrap gap-2 lg:gap-3 mb-2 lg:mb-4">
           <button
             onClick={() => setActiveLeague("ALL")}
-            className={`px-3 py-1 rounded-full text-base font-semibold transition-colors ${
+            className={`px-3 py-1 rounded-full text-sm lg:text-base font-semibold transition-colors ${
               activeLeague === "ALL"
                 ? "bg-[#836EF9] text-white"
                 : "bg-white/20 text-white"
@@ -101,7 +103,7 @@ const Leaderboard = () => {
             <button
               key={league}
               onClick={() => setActiveLeague(league)}
-              className="px-3 py-1 rounded-full text-base font-semibold transition-colors"
+              className="px-3 py-1 rounded-full text-sm lg:text-base font-semibold transition-colors"
               style={{
                 backgroundColor:
                   activeLeague === league
@@ -121,14 +123,14 @@ const Leaderboard = () => {
             <p className="text-gray-500">No holders found</p>
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full">
+          <div className="overflow-x-scroll w-full">
+            <table className="min-w-[600px] w-full">
               <thead>
                 <tr className="border-b border-white/10">
-                  <th className="text-left py-3">Rank</th>
+                  <th className="text-left pl-4 py-3">Rank</th>
                   <th className="text-left">Address</th>
                   <th className="text-right">Points</th>
-                  <th className="text-right">League</th>
+                  <th className="text-right pr-4">League</th>
                 </tr>
               </thead>
               <tbody>
@@ -142,7 +144,7 @@ const Leaderboard = () => {
                         : "hover:bg-white/5"
                     }`}
                   >
-                    <td className="p-2">
+                    <td className="p-2 pl-4">
                       <div className="flex items-center gap-2">
                         <p>{player.rank}</p>
                         <div className="relative w-16 h-16">
@@ -176,16 +178,21 @@ const Leaderboard = () => {
                         Number(player.points) / 10 ** 18
                       )?.toString() || "0"}
                     </td>
-                    <td className="text-right">
-                      <span
-                        className="inline-block px-3 py-1 rounded-full text-xs font-semibold"
+                    <td className="text-right pr-4">
+                      <div
+                        className="inline-flex items-center px-3 bg-white/10 rounded-full text-sm font-semibold"
                         style={{
-                          backgroundColor: player.leagueInfo.color,
+                          // backgroundColor: player.leagueInfo.color,
                           color: "white",
                         }}
                       >
+                        <img
+                          src={`/ranks/${player.league}.png`}
+                          alt={player.leagueInfo.name}
+                          className="w-[40px] h-[40px]"
+                        />
                         {player.leagueInfo.name}
-                      </span>
+                      </div>
                     </td>
                   </tr>
                 ))}

@@ -15,10 +15,12 @@ const NFTCard = ({ player, onLoad }: NFTCardProps) => {
     }
   }, [onLoad]);
 
+  console.log(player);
+
   return (
     <div className="w-full">
       <div className="relative group">
-        <div className="w-full rounded-xl overflow-hidden h-[460px] min-w-[350px] bg-black/20">
+        <div className="w-full rounded-xl overflow-hidden h-[460px] lg:min-w-[350px] bg-black/20">
           <img
             src={player?.nftImage || "/hackathon.png"}
             alt={player?.leagueInfo?.name || "NFT"}
@@ -32,13 +34,13 @@ const NFTCard = ({ player, onLoad }: NFTCardProps) => {
             <div className="flex items-center gap-2">
               {player?.leagueInfo?.image && (
                 <img
-                  src={player?.leagueInfo?.image}
+                  src={`/ranks/${player?.league}.png`}
                   alt={player?.leagueInfo?.name}
                   className="w-6 h-6 rounded-full"
                 />
               )}
               <span className="text-sm font-bold">
-                Rank {player?.rank.toString()}
+                {player?.leagueInfo?.name} Rank {player?.rank.toString()}
               </span>
             </div>
           </div>
