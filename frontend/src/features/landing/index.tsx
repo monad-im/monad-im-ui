@@ -44,7 +44,6 @@ const LandingPage: FC = () => {
           </div>
         </div>
       </section>
-
       <div className="relative overflow-x-hidden">
         <ChainsSection />
         <img

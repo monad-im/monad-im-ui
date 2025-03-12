@@ -4,8 +4,8 @@ import { useNFTCard } from "@/hooks/useNFTCard";
 import { formatNumber } from "@/utils/format";
 import { useAccount } from "wagmi";
 import Leaderboard from "./components/leaderboard";
-import NFTCard from "./components/leaderboard/nft-cards";
 import { Leagues } from "./components/leagues";
+import NFTCard from "./components/nft-section";
 
 const StatisticsSkeleton = () => {
   return (
@@ -28,20 +28,18 @@ const StatisticsSkeleton = () => {
 export const MintPage = () => {
   const { address } = useAccount();
   const {
-    currentRank,
+    currentRank: rank,
+    userPoints: points,
     mintFee,
-    userMinted,
-    userPoints,
-    holders,
+    userNFT,
+    hasNFT,
     isLoadingStats,
-    isMinting,
-    isUpgrading,
     isTxConfirming,
     isTxConfirmed,
     isTxError,
     hash,
-    mintNFT,
-    upgrade,
+    handleMintNFT,
+    handleUpgrade,
   } = useNFTCard();
   const { leaderboard } = useLeaderboard();
 
@@ -53,13 +51,10 @@ export const MintPage = () => {
         <div className="w-full bg-[rgba(255,255,255,0.05)] rounded-2xl px-9 py-5">
           <div className="flex flex-col md:flex-row gap-8">
             <div className="w-full md:w-fit">
-              {address && (
-                <NFTCard
-                  player={user}
-                  onLoad={() => console.log("NFT Card loaded")}
-                />
-              )}
-
+              <NFTCard
+                player={user}
+                onLoad={() => console.log("NFT Card loaded")}
+              />
               <div className="mt-3">
                 <p className="text-base text-white/70 font-medium">
                   Current Mint Price:
@@ -71,13 +66,13 @@ export const MintPage = () => {
 
               <div className="mt-4 flex gap-4">
                 <button
-                  onClick={mintNFT}
-                  disabled={isMinting || userMinted === true || isTxConfirming}
+                  onClick={handleMintNFT}
+                  disabled={isTxConfirming || hasNFT === true || isTxConfirming}
                   className={`flex-1 ${
-                    userMinted === true ? "bg-white/10" : "bg-purple"
+                    hasNFT === true ? "bg-white/10" : "bg-purple"
                   } py-3 px-6 rounded-lg font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2`}
                 >
-                  {isMinting ? (
+                  {isTxConfirming ? (
                     <>
                       <svg
                         className="animate-spin h-5 w-5 text-white"
@@ -106,13 +101,13 @@ export const MintPage = () => {
                   )}
                 </button>
                 <button
-                  onClick={upgrade}
-                  disabled={!userMinted || isUpgrading || isTxConfirming}
+                  onClick={handleUpgrade}
+                  disabled={!hasNFT || isTxConfirming || isTxConfirming}
                   className={`flex-1 ${
-                    userMinted ? "bg-purple" : "bg-white/10"
+                    hasNFT ? "bg-purple" : "bg-white/10"
                   } py-3 px-6 rounded-lg font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2`}
                 >
-                  {isUpgrading ? (
+                  {isTxConfirming ? (
                     <>
                       <svg
                         className="animate-spin h-5 w-5 text-white"
@@ -149,19 +144,13 @@ export const MintPage = () => {
                     {hash.substring(hash.length - 8)}
                   </p>
                   {isTxConfirming && (
-                    <p className="text-sm text-yellow-400">
-                      Confirmation en cours...
-                    </p>
+                    <p className="text-sm text-yellow-400">Tx pending...</p>
                   )}
                   {isTxConfirmed && (
-                    <p className="text-sm text-green-400">
-                      Transaction confirmée!
-                    </p>
+                    <p className="text-sm text-green-400">Tx confirmed</p>
                   )}
                   {isTxError && (
-                    <p className="text-sm text-red-400">
-                      Erreur de transaction
-                    </p>
+                    <p className="text-sm text-red-400">Tx failed</p>
                   )}
                 </div>
               )}

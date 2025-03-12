@@ -4,7 +4,7 @@ import { formatNumber } from "@/utils/format";
 import { useEffect } from "react";
 
 interface NFTCardProps {
-  player: PlayerInfo;
+  player: PlayerInfo | undefined;
   onLoad?: () => void;
 }
 

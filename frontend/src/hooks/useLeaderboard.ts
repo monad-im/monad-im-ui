@@ -42,6 +42,7 @@ const saveImageCache = (cache: Map<string, string>) => {
 const imageCache = loadImageCache();
 
 const RPC_URLS = [
+  "https://10143.rpc.thirdweb.com/",
   "https://testnet-rpc.monad.xyz/",
   "https://testnet-rpc2.monad.xyz/52227f026fa8fac9e2014c58fbf5643369b3bfc6",
   "https://cold-alien-pine.monad-testnet.quiknode.pro/bd2bdf09752a1d1519c98a1b8baa6467eaa50cb8/",
