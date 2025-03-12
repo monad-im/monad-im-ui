@@ -12,7 +12,7 @@ const poppins = Montserrat({
 });
 
 export const metadata: Metadata = {
-  title: "Monad Impress",
+  title: "King Nads",
   description:
     "Discover a revolutionary NFT experience that evolves with you. Every NFT is uniquely crafted to reflect your personal journey, growing and leveling up as you engage with our platform. Ready to redefine the digital frontier?",
 };

@@ -19,10 +19,10 @@ export const FAQSection = () => (
       <Accordion type="single" collapsible className="w-full">
         <AccordionItem value="item-1">
           <AccordionTrigger className="text-lg sm:text-xl text-base_color">
-            What is Monad Impress?
+            What is King Nads?
           </AccordionTrigger>
           <AccordionContent className="text-base sm:text-lg text-white">
-            Monad Impress is an evolving NFT ecosystem where each NFT adapts and
+            King Nads is an evolving NFT ecosystem where each NFT adapts and
             grows based on your experience on the platform. As you interact,
             your NFT advances through different tiers—much like Bronze, Silver,
             Gold, etc.—reflecting your progress and achievements.
