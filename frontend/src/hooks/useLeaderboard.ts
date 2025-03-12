@@ -269,8 +269,6 @@ export const useLeaderboard = () => {
     initialized,
   ]);
 
-  console.log("leaderboard", leaderboard, holders);
-
   const refreshLeaderboard = useCallback(() => {
     setInitialized(false);
   }, []);

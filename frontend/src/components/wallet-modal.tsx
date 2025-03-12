@@ -19,11 +19,11 @@ export const WalletModal: FC<PropsWithChildren> = ({ children }) => {
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent
         close={() => setIsOpen(false)}
-        className="sm:max-w-[425px] font-boo text-white bg-[#190e59] p-10 rounded-2xl border border-[rgba(255,255,255,0.1)]"
-        style={{zIndex: 100}}
+        className="sm:max-w-[475px] w-full font-boo text-white bg-[#120621] p-8 rounded-2xl border border-[rgba(255,255,255,0.1)]"
+        style={{ zIndex: 100 }}
       >
         <DialogHeader>
-          <DialogTitle className="text-4xl uppercase italic mb-5 text-white">
+          <DialogTitle className="text-3xl uppercase italic mb-3 text-white">
             Connect Wallet
           </DialogTitle>
         </DialogHeader>
@@ -38,7 +38,7 @@ export const WalletModal: FC<PropsWithChildren> = ({ children }) => {
                 connect({ connector });
                 setIsOpen(false);
               }}
-              className=" bg-[#a1055c]  rounded-lg h-[50px] px-2 font-medium text-xl uppercase"
+              className=" bg-white/10  rounded-lg h-[50px] px-2 font-medium text-xl uppercase"
             >
               {connector.name}
             </button>

@@ -51,10 +51,7 @@ export const MintPage = () => {
         <div className="w-full sm:bg-[rgba(255,255,255,0.05)] rounded-2xl px-5 lg:px-9 py-5">
           <div className="flex flex-col md:flex-row gap-8">
             <div className="w-full md:w-fit">
-              <NFTCard
-                player={user}
-                onLoad={() => console.log("NFT Card loaded")}
-              />
+              <NFTCard player={user} />
               <div className="mt-3">
                 <p className="text-sm sm:text-base text-white/70 font-medium">
                   Current Mint Price:
