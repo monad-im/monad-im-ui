@@ -11,7 +11,10 @@ export const Leagues = () => {
         {(Object.keys(LEAGUES) as League[]).map((league) => {
           const info = LEAGUES[league];
           return (
-            <div className="rounded-lg shadow bg-gradient-to-r p-3 lg:p-4 from-[rgba(255,255,255,0.1)] to-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.05)]">
+            <div
+              key={info.image}
+              className="rounded-lg shadow bg-gradient-to-r p-3 lg:p-4 from-[rgba(255,255,255,0.1)] to-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.05)]"
+            >
               <div className="flex items-center mb-2 gap-2">
                 <h3 className="font-bold text-xl sm:text-2xl">{info.name} </h3>
                 <Image
