@@ -24,8 +24,8 @@ KingNad NFT Leaderboard is a decentralized application (dApp) that allows users 
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/your-username/kingnad-nft-leaderboard.git
-   cd kingnad-nft-leaderboard
+   git clone https://github.com/monad-im/monad-im-ui.git
+   cd monad-im-ui
    ```
 
 2. **Install dependencies:**
