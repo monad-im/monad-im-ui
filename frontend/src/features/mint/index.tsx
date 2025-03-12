@@ -1,10 +1,10 @@
 "use client";
-import { League, useContract } from "@/hooks/useContract";
+import { useLeaderboard } from "@/hooks/useLeaderboard";
+import { useNFTCard } from "@/hooks/useNFTCard";
 import { formatNumber } from "@/utils/format";
-import { useCallback, useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 import Leaderboard from "./components/leaderboard";
-import { LEAGUES, RANKS } from "./constant";
+import NFTCard from "./components/leaderboard/nft-cards";
 
 const StatisticsSkeleton = () => {
   return (
@@ -27,188 +27,24 @@ const StatisticsSkeleton = () => {
 export const MintPage = () => {
   const { address } = useAccount();
   const {
+    currentRank,
     mintFee,
+    userMinted,
+    userPoints,
     holders,
-    mintNFT,
-    upgrade,
-    hasNFT,
+    isLoadingStats,
     isMinting,
     isUpgrading,
     isTxConfirming,
-    getPoints,
-    getRank,
-    getRankImage,
     isTxConfirmed,
-    hash,
-    userMinted,
     isTxError,
-    getRankMetadata,
-    getRankImage,
-    userPoints: points,
-    userRank: rank,
-  } = useContract();
+    hash,
+    mintNFT,
+    upgrade,
+  } = useNFTCard();
+  const { leaderboard } = useLeaderboard();
 
-  const [userRank, setUserRank] = useState<bigint | undefined>(undefined);
-  const [userPoints, setUserPoints] = useState<bigint | undefined>(undefined);
-  const [nftImageUrl, setNftImageUrl] = useState<string>("");
-  const [nftMetadata, setNftMetadata] = useState<any>(null);
-  const [percentage, setPercentage] = useState<number>(0);
-  const [leaderboard, setLeaderboard] = useState<
-    Array<{ address: string; points: bigint; rank: unknown }>
-  >([]);
-  const [isLoadingStats, setIsLoadingStats] = useState<boolean>(false);
-  const [isLoadingMyData, setIsLoadingMyData] = useState<boolean>(false);
-
-  const generateLeaderboard = useCallback(async () => {
-    if (holders && holders.length > 0) {
-      try {
-        const leaderboardData = [];
-        const addressesToProcess = holders.slice(0, 20);
-
-        for (const holderAddress of addressesToProcess) {
-          const points = await getPoints(holderAddress);
-          const rank = await getRank(holderAddress);
-
-          if (points !== undefined && rank !== undefined) {
-            leaderboardData.push({
-              address: holderAddress,
-              points: points || BigInt(0),
-              rank: rank || BigInt(0),
-            });
-          }
-        }
-
-        if (
-          address &&
-          userPoints &&
-          userRank &&
-          !leaderboardData.some(
-            (holder) => holder.address.toLowerCase() === address.toLowerCase()
-          )
-        ) {
-          leaderboardData.push({
-            address: address as string,
-            points: userPoints,
-            rank: userRank,
-          });
-        }
-
-        leaderboardData.sort((a, b) => (b.points > a.points ? 1 : -1));
-
-        setLeaderboard(leaderboardData);
-      } catch (error) {
-        console.error("Erreur lors de la génération du leaderboard:", error);
-      } finally {
-      }
-    }
-  }, [holders, getPoints, getRank, address, userPoints, userRank]);
-
-  const refreshAllData = useCallback(async () => {
-    if (isLoadingStats) return;
-    
-    console.log('LOADING: stats');
-    setIsLoadingStats(true);
-
-    try {
-      await generateLeaderboard();
-    } catch (error) {
-    } finally {
-      setIsLoadingStats(false);
-    }
-  }, [generateLeaderboard, isLoadingStats]);
-
-  const refreshMyData = useCallback(async () => {
-    if (isLoadingMyData) return;
-    setIsLoadingMyData(true);
-
-    try {
-      if (address) {
-        const hasNFTResult = await hasNFT(address);
-
-        if (hasNFTResult) {
-          const [userRankResult, userPointsResult] = await Promise.all([
-            getRank(address),
-            getPoints(address),
-          ]);
-
-          if (userRankResult) {
-            const myRankMetadata = await getRankImage(userRankResult);
-            if (myRankMetadata) {
-              setNftImageUrl(myRankMetadata);
-            }
-          }
-
-          setUserRank(userRankResult as bigint | undefined);
-          setUserPoints(userPointsResult);
-
-          if (userPointsResult && userRankResult) {
-            const nextRankPoints = BigInt(100) * BigInt(10 ** 18);
-            const currentPoints = userPointsResult;
-            const progressPercentage = Number(
-              (currentPoints * BigInt(100)) / nextRankPoints
-            );
-            setPercentage(Math.min(progressPercentage, 100));
-          }
-        }
-      }
-    } catch (error) {
-    } finally {
-      setIsLoadingMyData(false);
-    }
-  }, [isLoadingMyData, address, hasNFT, getRank, getPoints, getRankImage]);
-
-  useEffect(() => {
-    if (address) {
-      refreshMyData();
-      refreshAllData();
-    }
-  }, [address]);
-
-  useEffect(() => {
-    if (isTxConfirmed) {
-      setTimeout(() => {
-        refreshAllData();
-      }, 3000);
-    }
-  }, [isTxConfirmed, refreshAllData]);
-
-  useEffect(() => {
-    if (userMinted !== undefined) {
-      refreshAllData();
-    }
-  }, [userMinted, refreshAllData]);
-
-  const currentRank = RANKS.find((rank) => BigInt(rank.rank) === userRank) || RANKS[0];
-
-  const handleMintNFT = async (e: any) => {
-    try {
-      await mintNFT(e);
-    } catch (error) {
-      console.error("Erreur lors du mint:", error);
-    }
-  };
-
-  const handleUpgrade = async () => {
-    try {
-      await upgrade();
-    } catch (error) {
-      console.error("Erreur lors de l'upgrade:", error);
-    }
-  };
-
-  useEffect(() => {
-    const test = async () => {
-      try {
-        // const a = await getRankImage(rank);
-        // console.log("abbbbb", a);
-        const b = await getRankImage(1);
-        console.log("abbbbb", b);
-      } catch (e) {
-        console.log("NOOOOOOOOO");
-      }
-    };
-    test();
-  }, [rank, address]);
+  const user = leaderboard.find((player) => player.address === address);
 
   return (
     <main className="container mx-auto py-8">
@@ -216,97 +52,12 @@ export const MintPage = () => {
         <div className="w-full bg-[rgba(255,255,255,0.05)] rounded-2xl px-9 py-5">
           <div className="flex flex-col md:flex-row gap-8">
             <div className="w-full md:w-fit">
-              <div className="relative group">
-                <div className="w-full rounded-xl overflow-hidden h-[460px] min-w-[350px]">
-                  <img
-                    src={nftImageUrl || "/hackathon.png"}
-                    alt="NFT"
-                    className="w-full h-[460px] object-contain transition-transform duration-500 group-hover:scale-105"
-                    onLoad={() => console.log("NFT image loaded")}
-                    loading="lazy"
-                  />
-                </div>
-
-                {userRank && userRank > 0 && (
-                  <div className="absolute top-3 right-3 bg-black/70 backdrop-blur-sm px-3 py-1 rounded-full shadow-lg">
-                    <div className="flex items-center gap-2">
-                      <img
-                        src={currentRank.image}
-                        alt={currentRank.name}
-                        className="w-6 h-6 rounded-full"
-                      />
-                      <span className="text-sm font-bold">
-                        Rank {rank?.toString() || 0}
-                      </span>
-                    </div>
-                  </div>
-                )}
-
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 rounded-xl">
-                  <div className="mt-4">
-                    {nftMetadata && nftMetadata.attributes ? (
-                      <div
-                        className="grid grid-cols-2 gap-2 opacity-0 animate-fadeIn"
-                        style={{
-                          animationDelay: "300ms",
-                          animationFillMode: "forwards",
-                        }}
-                      >
-                        {nftMetadata.attributes.map(
-                          (attr: any, index: number) => (
-                            <div
-                              key={index}
-                              className="bg-white/10 p-3 rounded-lg hover:bg-white/15 transition-colors duration-200"
-                            >
-                              <p className="text-xs text-white/50">
-                                {attr.trait_type}
-                              </p>
-                              <p className="font-medium">{attr.value}</p>
-                            </div>
-                          )
-                        )}
-                      </div>
-                    ) : (
-                      userRank &&
-                      userRank > 0 && (
-                        <div
-                          className="grid grid-cols-2 gap-2 opacity-0 animate-fadeIn"
-                          style={{
-                            animationDelay: "300ms",
-                            animationFillMode: "forwards",
-                          }}
-                        >
-                          <div className="bg-white/10 p-3 rounded-lg hover:bg-white/15 transition-colors duration-200">
-                            <p className="text-xs text-white/50">Rank</p>
-                            <p className="font-medium">{currentRank.name}</p>
-                          </div>
-                          <div className="bg-white/10 p-3 rounded-lg hover:bg-white/15 transition-colors duration-200">
-                            <p className="text-xs text-white/50">Points</p>
-                            <p className="font-medium">
-                              {points?.toString() || "0"}
-                            </p>
-                          </div>
-                          <div className="bg-white/10 p-3 rounded-lg hover:bg-white/15 transition-colors duration-200">
-                            <p className="text-xs text-white/50">Token ID</p>
-                            <p className="font-medium">0</p>
-                          </div>
-                          <div className="bg-white/10 p-3 rounded-lg hover:bg-white/15 transition-colors duration-200">
-                            <p className="text-xs text-white/50">Collection</p>
-                            <p className="font-medium">KingNad</p>
-                          </div>
-                        </div>
-                      )
-                    )}
-                  </div>
-                  <h3 className="text-xl font-bold transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                    {nftMetadata?.name || `KingNad #${currentRank.rank.toString()}`}
-                  </h3>
-                  <p className="text-white/70 mt-1 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-75">
-                    {nftMetadata?.description ||
-                      `A ${currentRank.name} rank NFT in the KingNad collection`}
-                  </p>
-                </div>
-              </div>
+              {address && (
+                <NFTCard
+                  player={user}
+                  onLoad={() => console.log("NFT Card loaded")}
+                />
+              )}
 
               <div className="mt-3">
                 <p className="text-base text-white/70 font-medium">
@@ -316,9 +67,10 @@ export const MintPage = () => {
                   {mintFee ? Number(mintFee) / 10 ** 18 : "0"} MON
                 </p>
               </div>
+
               <div className="mt-4 flex gap-4">
                 <button
-                  onClick={handleMintNFT}
+                  onClick={mintNFT}
                   disabled={isMinting || userMinted === true || isTxConfirming}
                   className={`flex-1 ${
                     userMinted === true ? "bg-white/10" : "bg-purple"
@@ -353,7 +105,7 @@ export const MintPage = () => {
                   )}
                 </button>
                 <button
-                  onClick={handleUpgrade}
+                  onClick={upgrade}
                   disabled={!userMinted || isUpgrading || isTxConfirming}
                   className={`flex-1 ${
                     userMinted ? "bg-purple" : "bg-white/10"
@@ -388,6 +140,7 @@ export const MintPage = () => {
                   )}
                 </button>
               </div>
+
               {hash && (
                 <div className="mt-4 p-3 bg-white/10 rounded-lg">
                   <p className="text-sm">
@@ -413,7 +166,7 @@ export const MintPage = () => {
               )}
             </div>
 
-            <div className="w-full md:w-full ">
+            <div className="w-full md:w-full">
               <h2 className="text-4xl font-bold mb-5">Statistics</h2>
               {isLoadingStats ? (
                 <StatisticsSkeleton />
@@ -422,7 +175,7 @@ export const MintPage = () => {
                   <div className="h-[130px] col-span-1 bg-white/10 rounded-2xl">
                     <div className="flex items-center justify-center flex-col w-full h-full">
                       <h1 className="text-4xl font-bold text-center">
-                        #{rank?.toString() || "N/A"}
+                        #{currentRank?.toString() || "N/A"}
                       </h1>
                       <p className="text-sm text-white/50 text-center mt-3">
                         Rank
@@ -432,7 +185,8 @@ export const MintPage = () => {
                   <div className="h-[130px] col-span-1 bg-white/10 rounded-2xl">
                     <div className="flex items-center justify-center flex-col w-full h-full">
                       <h1 className="text-4xl font-bold text-center">
-                        {formatNumber(Number(points || 0) / 10 ** 18) || "0"}
+                        {formatNumber(Number(userPoints || 0) / 10 ** 18) ||
+                          "0"}
                       </h1>
                       <p className="text-sm text-white/50 text-center mt-3">
                         Points
@@ -451,62 +205,6 @@ export const MintPage = () => {
                   </div>
                 </div>
               )}
-              {/* <div className="flex w-full justify-between mt-6">
-                <div className="flex text-white flex-col">
-                  <img
-                    src={currentRank.image}
-                    alt={currentRank.name}
-                    className="w-[70px]"
-                  />
-                  <h1 className="text-3xl font-bold">{currentRank.name}</h1>
-                </div>
-                <div className="flex text-white flex-col">
-                  <img
-                    src={nextRank.image}
-                    alt={nextRank.name}
-                    className="w-[70px] ml-auto"
-                  />
-                  <h1 className="text-3xl font-bold">{nextRank.name}</h1>
-                </div>
-              </div>
-              <div className="h-5 w-full rounded-full bg-white/10 relative mt-3">
-                <div
-                  className="absolute left-0 top-0 h-full bg-white rounded-full"
-                  style={{ width: `${percentage}%` }}
-                ></div>
-              </div> */}
-              <div className="bg-[rgba(255,255,)] rounded-lg shadow mt-10">
-                <h2 className="text-3xl font-bold mb-4">Statistics</h2>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg">
-                    <p className="text-base mb-2 text-gray-500 dark:text-gray-400">
-                      Total Holders
-                    </p>
-                    <p className="text-3xl font-bold">
-                      {leaderboard?.length || 0}
-                    </p>
-                  </div>
-
-                  {(Object.keys(LEAGUES) as League[]).map((league) => (
-                    <div
-                      key={league}
-                      className="p-3 rounded-lg h-[95px]"
-                      style={{ backgroundColor: `${LEAGUES[league].color}20` }}
-                    >
-                      <p className="text-base mb-2 text-gray-500 dark:text-gray-400">
-                        {LEAGUES[league].name}
-                      </p>
-                      <p className="text-3xl font-bold">
-                        {leaderboard?.filter(
-                          (p) =>
-                            (p as unknown as { league: League })?.league ===
-                            league
-                        ).length || 0}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </div>
             </div>
           </div>
         </div>

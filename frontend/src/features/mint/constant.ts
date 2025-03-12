@@ -1,92 +1,49 @@
 import { League, LeagueInfo } from "@/hooks/useContract";
 
-export const RANKS = [
-  {
-    name: "Unranked",
-    description: "This is the third level.",
-    image: "/ranks/unranked.webp",
-    rank: 0,
-  },
-  {
-    name: "Iron",
-    description: "This is the first level.",
-    image: "/ranks/iron.webp",
-    rank: 8,
-  },
-  {
-    name: "Bronze",
-    description: "This is the second level.",
-    image: "/ranks/bronze.webp",
-    rank: 7,
-  },
+export type League = "A" | "B" | "C" | "D" | "E";
 
-  {
-    name: "Gold",
-    description: "This is the fourth level.",
-    image: "/ranks/gold.webp",
-    rank: 6,
-  },
-  {
-    name: "Platinum",
-    description: "This is the fifth level.",
-    image: "/ranks/platinum.webp",
-    rank: 5,
-  },
-  {
-    name: "Diamond",
-    description: "This is the sixth level.",
-    image: "/ranks/diamond.webp",
-    rank: 4,
-  },
-  {
-    name: "Master",
-    description: "This is the seventh level.",
-    image: "/ranks/master.webp",
-    rank: 3,
-  },
-  {
-    name: "Grand Master",
-    description: "This is the eighth level.",
-    image: "/ranks/grand-master.webp",
-    rank: 2,
-  },
-  {
-    name: "Challenger",
-    description: "This is the ninth level.",
-    image: "/ranks/challenger.webp",
-    rank: 1,
-  },
-];
+export interface LeagueInfo {
+  name: string;
+  percentageRange: [number, number];
+  description: string;
+  color: string;
+  image: string;
+}
 
 export const LEAGUES: Record<League, LeagueInfo> = {
   A: {
     name: "Challenger",
-    percentageRange: [0, 19],
-    description: "Elite KingNad holders",
+    percentageRange: [0, 20],
+    description: "Top 20% des holders KingNad",
     color: "#00FF00",
+    image: "/ranks/A.png",
   },
   B: {
     name: "Diamond",
-    percentageRange: [20, 39],
-    description: "Premium KingNad holders",
+    percentageRange: [21, 40],
+    description: "Top 21-40% des holders KingNad",
     color: "#FF0000",
+    image: "/ranks/B.png",
   },
   C: {
     name: "Gold",
-    percentageRange: [40, 59],
-    description: "Veteran KingNad holders",
+    percentageRange: [41, 60],
+    description: "Top 41-60% des holders KingNad",
     color: "#E5E4E2",
+    image: "/ranks/C.png",
   },
   D: {
     name: "Silver",
-    percentageRange: [60, 79],
-    description: "Skilled KingNad holders",
+    percentageRange: [61, 80],
+    description: "Top 61-80% des holders KingNad",
     color: "#FFC300",
+    image: "/ranks/D.png",
   },
   E: {
     name: "Bronze",
-    percentageRange: [80, 100],
-    description: "Aspiring KingNad holders",
+    percentageRange: [81, 100],
+    description: "Top 81-100% des holders KingNad",
     color: "#C0C0C0",
+    image: "/ranks/E.png",
   },
 };
