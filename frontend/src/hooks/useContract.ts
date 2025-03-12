@@ -43,7 +43,8 @@ type ContractReturn = {
   upgrade: () => Promise<void>;
   hasNFT: (address?: string) => Promise<boolean>;
   getPoints: (address?: string) => Promise<bigint | undefined>;
-  getRank: (toAddress?: string) => Promise<unknown>;
+  getRank: (toAddress?: string) => Promise<bigint | undefined>;
+  getRankImage: (rank: bigint) => Promise<string | undefined>;
   getLeagueImage: (address: string) => string | undefined;
   refreshRankings: () => Promise<void>;
   calculateLeaderboard: () => Promise<void>;
@@ -263,7 +264,21 @@ export const useContract = (): ContractReturn => {
         functionName: "getRank",
         args: [toAddress],
       });
-      return rank;
+      return rank as bigint;
+    } catch (error) {
+      return undefined;
+    }
+  };
+
+  const getRankImage = async (rank: bigint) => {
+    try {
+      const result = await readContract(publicClient, {
+        address: CONTRACT_ADDRESS,
+        abi: CONTRACT_ABI,
+        functionName: "getRankImage",
+        args: [rank],
+      });
+      return result as string;
     } catch (error) {
       return undefined;
     }
@@ -423,6 +438,7 @@ export const useContract = (): ContractReturn => {
     hasNFT,
     getPoints,
     getRank,
+    getRankImage,
     getLeagueImage,
     refreshRankings,
     calculateLeaderboard,

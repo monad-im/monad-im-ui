@@ -2,6 +2,12 @@ import { League, LeagueInfo } from "@/hooks/useContract";
 
 export const RANKS = [
   {
+    name: "Unranked",
+    description: "This is the third level.",
+    image: "/ranks/unranked.webp",
+    rank: 0,
+  },
+  {
     name: "Iron",
     description: "This is the first level.",
     image: "/ranks/iron.webp",

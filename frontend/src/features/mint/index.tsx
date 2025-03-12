@@ -37,6 +37,7 @@ export const MintPage = () => {
     isTxConfirming,
     getPoints,
     getRank,
+    getRankImage,
     isTxConfirmed,
     hash,
     userMinted,
@@ -55,7 +56,8 @@ export const MintPage = () => {
   const [leaderboard, setLeaderboard] = useState<
     Array<{ address: string; points: bigint; rank: unknown }>
   >([]);
-  const [isLoadingStats, setIsLoadingStats] = useState<boolean>(true);
+  const [isLoadingStats, setIsLoadingStats] = useState<boolean>(false);
+  const [isLoadingMyData, setIsLoadingMyData] = useState<boolean>(false);
 
   const generateLeaderboard = useCallback(async () => {
     if (holders && holders.length > 0) {
@@ -102,7 +104,22 @@ export const MintPage = () => {
   }, [holders, getPoints, getRank, address, userPoints, userRank]);
 
   const refreshAllData = useCallback(async () => {
+    if (isLoadingStats) return;
+    
+    console.log('LOADING: stats');
     setIsLoadingStats(true);
+
+    try {
+      await generateLeaderboard();
+    } catch (error) {
+    } finally {
+      setIsLoadingStats(false);
+    }
+  }, [generateLeaderboard, isLoadingStats]);
+
+  const refreshMyData = useCallback(async () => {
+    if (isLoadingMyData) return;
+    setIsLoadingMyData(true);
 
     try {
       if (address) {
@@ -113,6 +130,13 @@ export const MintPage = () => {
             getRank(address),
             getPoints(address),
           ]);
+
+          if (userRankResult) {
+            const myRankMetadata = await getRankImage(userRankResult);
+            if (myRankMetadata) {
+              setNftImageUrl(myRankMetadata);
+            }
+          }
 
           setUserRank(userRankResult as bigint | undefined);
           setUserPoints(userPointsResult);
@@ -127,16 +151,15 @@ export const MintPage = () => {
           }
         }
       }
-
-      await generateLeaderboard();
     } catch (error) {
     } finally {
-      setIsLoadingStats(false);
+      setIsLoadingMyData(false);
     }
-  }, [address, hasNFT, getRank, getPoints, generateLeaderboard]);
+  }, [isLoadingMyData, address, hasNFT, getRank, getPoints, getRankImage]);
 
   useEffect(() => {
     if (address) {
+      refreshMyData();
       refreshAllData();
     }
   }, [address]);
@@ -155,10 +178,7 @@ export const MintPage = () => {
     }
   }, [userMinted, refreshAllData]);
 
-  const currentRank =
-    userRank && userRank > 0 && userRank <= BigInt(RANKS.length)
-      ? RANKS[Number(userRank) - 1]
-      : RANKS[0];
+  const currentRank = RANKS.find((rank) => BigInt(rank.rank) === userRank) || RANKS[0];
 
   const handleMintNFT = async (e: any) => {
     try {
@@ -279,7 +299,7 @@ export const MintPage = () => {
                     )}
                   </div>
                   <h3 className="text-xl font-bold transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                    {nftMetadata?.name || `KingNad #${0?.toString() || "0"}`}
+                    {nftMetadata?.name || `KingNad #${currentRank.rank.toString()}`}
                   </h3>
                   <p className="text-white/70 mt-1 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-75">
                     {nftMetadata?.description ||
