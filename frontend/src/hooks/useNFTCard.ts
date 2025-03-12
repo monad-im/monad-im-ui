@@ -5,6 +5,7 @@ import { createPublicClient, http } from "viem";
 import { readContract } from "viem/actions";
 import {
   useAccount,
+  useReadContract,
   useWaitForTransactionReceipt,
   useWriteContract,
 } from "wagmi";
@@ -26,9 +27,7 @@ export const useNFTCard = () => {
   const [userNFT, setUserNFT] = useState<string>("/hackathon.png");
   const [rank, setRank] = useState<bigint | undefined>();
   const [points, setPoints] = useState<bigint | undefined>();
-  const [mintFee, setMintFee] = useState<bigint>();
   const [isLoadingStats, setIsLoadingStats] = useState(false);
-  const [hasNFT, setHasNFT] = useState<boolean>(false);
 
   const publicClient = createPublicClient({
     chain: monadTestnet,
@@ -74,25 +73,20 @@ export const useNFTCard = () => {
     throw lastError;
   };
 
-  useEffect(() => {
-    const loadBasicData = async () => {
-      try {
-        const fee = await retryContractCall(async () => {
-          return readContract(publicClient, {
-            address: CONTRACT_ADDRESS,
-            abi: CONTRACT_ABI,
-            functionName: "getCurrentMintFee",
-          });
-        });
-        setMintFee(fee as bigint);
-      } catch (error) {
-        console.error("Erreur lors du chargement du mint fee:", error);
-      }
-    };
+  const { data: mintFee } = useReadContract({
+    address: CONTRACT_ADDRESS,
+    abi: CONTRACT_ABI,
+    functionName: "getCurrentMintFee",
+  });
 
-    loadBasicData();
-  }, []);
+  const { data: hasNFT } = useReadContract({
+    address: CONTRACT_ADDRESS,
+    abi: CONTRACT_ABI,
+    functionName: "hasNFT",
+    args: [address],
+  });
 
+  console.log(mintFee);
   useEffect(() => {
     const loadUserData = async () => {
       if (!address) return;
@@ -107,8 +101,6 @@ export const useNFTCard = () => {
             args: [address],
           });
         });
-
-        setHasNFT(hasNFTResult as boolean);
 
         if (hasNFTResult) {
           const [userRank, userPoints] = await Promise.all([

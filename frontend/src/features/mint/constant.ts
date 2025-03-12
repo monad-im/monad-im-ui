@@ -1,5 +1,3 @@
-import { League, LeagueInfo } from "@/hooks/useContract";
-
 export type League = "A" | "B" | "C" | "D" | "E";
 
 export interface LeagueInfo {

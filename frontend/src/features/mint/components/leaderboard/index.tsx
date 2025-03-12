@@ -5,31 +5,6 @@ import { useEffect, useRef, useState } from "react";
 import { useAccount } from "wagmi";
 import { League, LEAGUES } from "../../constant";
 
-const LeagueInfo = ({ league }: { league: League }) => {
-  const info = LEAGUES[league];
-
-  return (
-    <div className="rounded-lg shadow bg-gradient-to-r p-4 from-[rgba(255,255,255,0.1)] to-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.05)]">
-      <div className="flex items-center mb-2">
-        <h3 className="font-bold text-2xl">{info.name} League</h3>
-        <Image
-          src={info.image}
-          alt={info.name}
-          width={40}
-          height={40}
-          className="object-cover"
-        />
-      </div>
-      <p className="text-base text-gray-600 dark:text-gray-300 mb-1">
-        {info.description}
-      </p>
-      <p className="text-sm text-gray-500 dark:text-gray-400">
-        Percentiles: {info.percentageRange[0]}% - {info.percentageRange[1]}%
-      </p>
-    </div>
-  );
-};
-
 const LeaderboardSkeleton = () => {
   return (
     <table className="w-full">
@@ -99,14 +74,6 @@ const Leaderboard = () => {
 
   return (
     <div className="gap-5 flex flex-col md:flex-row">
-      <div className="bg-[rgba(255,255,255,0.05)] rounded-lg shadow p-6 mt-5 min-w-[300px] md:min-w-[400px]">
-        <h2 className="text-3xl font-bold mb-5">Leagues</h2>
-        <div className="space-y-2">
-          {(Object.keys(LEAGUES) as League[]).map((league) => (
-            <LeagueInfo key={league} league={league} />
-          ))}
-        </div>
-      </div>
       <div className="w-full rounded-2xl p-6 bg-[rgba(255,255,255,0.05)] mt-5">
         <div className="flex justify-between items-center mb-6 flex-wrap gap-2">
           <h2 className="text-4xl font-bold">Leaderboard</h2>

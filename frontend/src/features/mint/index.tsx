@@ -5,6 +5,7 @@ import { formatNumber } from "@/utils/format";
 import { useAccount } from "wagmi";
 import Leaderboard from "./components/leaderboard";
 import NFTCard from "./components/leaderboard/nft-cards";
+import { Leagues } from "./components/leagues";
 
 const StatisticsSkeleton = () => {
   return (
@@ -172,20 +173,20 @@ export const MintPage = () => {
                 <StatisticsSkeleton />
               ) : (
                 <div className="grid grid-cols-3 gap-3">
-                  <div className="h-[130px] col-span-1 bg-white/10 rounded-2xl">
+                  <div className="h-[130px] col-span-1 bg-gradient-to-r p-4 from-[rgba(255,255,255,0.1)] to-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.05)] rounded-lg">
                     <div className="flex items-center justify-center flex-col w-full h-full">
                       <h1 className="text-4xl font-bold text-center">
-                        #{currentRank?.toString() || "N/A"}
+                        #{user?.rank?.toString() || "N/A"}
                       </h1>
                       <p className="text-sm text-white/50 text-center mt-3">
                         Rank
                       </p>
                     </div>
                   </div>
-                  <div className="h-[130px] col-span-1 bg-white/10 rounded-2xl">
+                  <div className="h-[130px] col-span-1 bg-gradient-to-r p-4 from-[rgba(255,255,255,0.1)] to-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.05)] rounded-lg">
                     <div className="flex items-center justify-center flex-col w-full h-full">
                       <h1 className="text-4xl font-bold text-center">
-                        {formatNumber(Number(userPoints || 0) / 10 ** 18) ||
+                        {formatNumber(Number(user?.points || 0) / 10 ** 18) ||
                           "0"}
                       </h1>
                       <p className="text-sm text-white/50 text-center mt-3">
@@ -193,10 +194,10 @@ export const MintPage = () => {
                       </p>
                     </div>
                   </div>
-                  <div className="h-[130px] col-span-1 bg-white/10 rounded-2xl">
+                  <div className="h-[130px] col-span-1 bg-gradient-to-r p-4 from-[rgba(255,255,255,0.1)] to-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.05)] rounded-lg">
                     <div className="flex items-center justify-center flex-col w-full h-full">
                       <h1 className="text-4xl font-bold text-center">
-                        {holders?.length || "0"}
+                        {leaderboard?.length || "0"}
                       </h1>
                       <p className="text-sm text-white/50 text-center mt-3">
                         Holders
@@ -205,6 +206,7 @@ export const MintPage = () => {
                   </div>
                 </div>
               )}
+              <Leagues />
             </div>
           </div>
         </div>
